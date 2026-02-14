@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sofia Sharomazova | Artist</title>
+    
+    <!-- Fonts: 
+         Space Grotesk: Hero Display
+         Manrope: Navigation/Header (Cleaner, Premium)
+         Inter: Body text 
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Manrope:wght@500;600;700&family=Space+Grotesk:wght@500;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'theme-bg': 'var(--bg-color)',
+                        'theme-text': 'var(--text-color)',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        header: ['Manrope', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    },
+                    keyframes: {
+                        blurIn: {
+                            '0%': { opacity: '0', filter: 'blur(20px)' },
+                            '100%': { opacity: '1', filter: 'blur(0)' },
+                        },
+                        slideInRight: {
+                            '0%': { transform: 'translateX(40px)', opacity: '0' },
+                            '100%': { transform: 'translateX(0)', opacity: '1' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        }
+                    },
+                    animation: {
+                        'blur-in': 'blurIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'slide-in': 'slideInRight 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards', 
+                        'fade-in': 'fadeIn 0.8s ease-in forwards',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            /* Default: Stark Red */
+            --bg-color: #000000;
+            --text-color: #E31C25;
+        }
+
+        [data-theme="green"] {
+            /* Warm Green Theme */
+            /* Adjusted text color to be darker/richer to match the portrait better */
+            --bg-color: #D95420; 
+            --text-color: #2e4d28; 
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        ::selection {
+            background: var(--text-color);
+            color: var(--bg-color);
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-color);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--text-color);
+            border-radius: 4px;
+            opacity: 0.5;
+        }
+
+        .nav-link {
+            position: relative;
+            text-decoration: none;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            background-color: var(--text-color);
+            transition: all 0.3s ease-out;
+            transform: translateX(-50%);
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .theme-toggle {
+            cursor: pointer;
+            width: 44px;
+            height: 24px;
+            background: transparent;
+            border: 2px solid var(--text-color);
+            border-radius: 99px;
+            position: relative;
+            transition: all 0.3s;
+        }
+        .theme-toggle::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 14px;
+            height: 14px;
+            background: var(--text-color);
+            border-radius: 50%;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        [data-theme="green"] .theme-toggle::after {
+            left: 23px; /* Moved slightly more to right */
+        }
+
+        #loader {
+            position: fixed;
+            inset: 0;
+            background: var(--bg-color);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s ease;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Loading Screen -->
+    <div id="loader">
+        <div class="h-1 w-24 bg-theme-text/20 overflow-hidden">
+            <div class="h-full bg-theme-text animate-slide-in w-full"></div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main>
+        
+        <!-- SECTION 1: LANDING -->
+        <!-- Fixed height container to ensure alignment -->
+        <section id="home" class="relative w-full h-screen flex flex-col items-center justify-center overflow-hidden px-4 md:px-12">
+            
+            <!-- Navigation -->
+            <nav class="absolute top-0 left-0 w-full z-40 py-8 px-6 md:px-12 flex justify-between items-center opacity-0 animate-fade-in" style="animation-delay: 2.2s;">
+                <div class="hidden md:block w-20"></div>
+                
+                <div class="flex gap-8 md:gap-16 text-xs md:text-sm tracking-[0.15em] font-header font-bold uppercase text-theme-text">
+                    <a href="#gallery" class="nav-link">Art</a>
+                    <a href="#bio" class="nav-link">Bio</a>
+                    <a href="mailto:sofia@example.com" class="nav-link">Contact</a>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <div class="theme-toggle" onclick="toggleTheme()" title="Switch Theme"></div>
+                </div>
+            </nav>
+
+            <!-- HERO CONTENT WRAPPER -->
+            <!-- We use a grid/flex layout to lock height -->
+            <div class="w-full max-w-[1600px] flex flex-col md:flex-row items-end justify-center md:gap-4 relative mt-12 md:mt-0">
+
+                <!-- Left: Portrait -->
+                <!-- Explicit Height matched to desktop -->
+                <div class="w-full md:w-[42%] h-[50vh] md:h-[70vh] relative z-10 flex items-end justify-center md:justify-end order-2 md:order-1">
+                    <img 
+                        id="hero-portrait"
+                        src="https://res.cloudinary.com/dp3g7dyx9/image/upload/v1771098209/Sonia_red_minimalism_SVG_rxzjob.svg" 
+                        class="h-full w-auto object-contain object-bottom opacity-0 animate-blur-in" 
+                        style="animation-delay: 0.2s;"
+                        alt="Sofia Sharomazova"
+                    >
+                </div>
+
+                <!-- Right: Typography -->
+                <!-- Height matched to portrait -->
+                <div class="w-full md:w-[48%] h-auto md:h-[70vh] flex flex-col justify-end z-20 order-1 md:order-2 pb-4 md:pb-0">
+                    <div class="flex flex-col text-center md:text-left">
+                        <!-- Tighter leading, tracking, and no gaps -->
+                        <h1 class="font-display font-bold text-[17vw] md:text-[10vw] leading-[0.75] tracking-tighter text-theme-text opacity-0 animate-slide-in" style="animation-delay: 1.5s;">
+                            SOFIA
+                        </h1>
+                        <h1 class="font-display font-bold text-[17vw] md:text-[10vw] leading-[0.75] tracking-tighter text-theme-text opacity-0 animate-slide-in" style="animation-delay: 1.7s;">
+                            SHARO
+                        </h1>
+                        <h1 class="font-display font-bold text-[17vw] md:text-[10vw] leading-[0.75] tracking-tighter text-theme-text opacity-0 animate-slide-in" style="animation-delay: 1.9s;">
+                            MAZOVA
+                        </h1>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECTION 2: GALLERY -->
+        <section id="gallery" class="min-h-screen w-full px-6 py-24 relative z-10">
+            <div class="max-w-[1400px] mx-auto">
+                <!-- Gallery Header -->
+                <div class="mb-12 flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-theme-text/20 pb-6">
+                    <h2 class="font-display text-4xl md:text-6xl font-bold text-theme-text tracking-tighter">SELECTED WORKS</h2>
+                    <div class="flex flex-wrap gap-6 text-xs font-header font-bold tracking-wider uppercase text-theme-text/60" id="filter-container"></div>
+                </div>
+
+                <!-- Admin Add Button -->
+                <div id="admin-controls" class="hidden mb-8 p-6 border border-theme-text/30 bg-theme-text/5 rounded-lg">
+                    <form id="add-art-form" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <input type="text" name="title" placeholder="Title" class="bg-transparent border border-theme-text/30 p-2 text-theme-text placeholder-theme-text/30 focus:border-theme-text outline-none" required>
+                        <input type="text" name="year" placeholder="Year" class="bg-transparent border border-theme-text/30 p-2 text-theme-text placeholder-theme-text/30 focus:border-theme-text outline-none" required>
+                        <input type="text" name="medium" placeholder="Technique" class="bg-transparent border border-theme-text/30 p-2 text-theme-text placeholder-theme-text/30 focus:border-theme-text outline-none" required>
+                        <input type="text" name="subject" placeholder="People" class="bg-transparent border border-theme-text/30 p-2 text-theme-text placeholder-theme-text/30 focus:border-theme-text outline-none" required>
+                        <input type="text" name="location" placeholder="Place" class="bg-transparent border border-theme-text/30 p-2 text-theme-text placeholder-theme-text/30 focus:border-theme-text outline-none" required>
+                        <input type="url" name="url" placeholder="Image URL" class="bg-transparent border border-theme-text/30 p-2 text-theme-text placeholder-theme-text/30 focus:border-theme-text outline-none" required>
+                        <button type="submit" class="col-span-full bg-theme-text text-theme-bg py-3 hover:opacity-90 transition-opacity font-bold uppercase">Add to Gallery</button>
+                    </form>
+                </div>
+
+                <!-- Gallery Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="gallery-grid"></div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: BIO -->
+        <section id="bio" class="min-h-[60vh] w-full px-6 py-24 border-t border-theme-text/10 flex items-center">
+            <div class="max-w-4xl mx-auto w-full grid grid-cols-1 md:grid-cols-12 gap-12">
+                <div class="md:col-span-4">
+                    <h2 class="font-display text-4xl text-theme-text font-bold mb-6">BIOGRAPHY</h2>
+                    <div class="w-12 h-1 bg-theme-text mb-6"></div>
+                    <ul class="space-y-2 text-sm text-theme-text/60 font-header tracking-wide">
+                        <li>Based in Oxford, UK</li>
+                        <li>Specializing in Portraiture</li>
+                        <li>Mixed Media & Oil</li>
+                    </ul>
+                </div>
+                <div class="md:col-span-8">
+                    <div id="bio-content" class="text-xl md:text-3xl font-light leading-relaxed text-theme-text font-display">
+                        Sofia Sharomazova is a Russian artist living and working in Oxford.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="py-12 px-6 border-t border-theme-text/5 flex justify-between items-center text-theme-text/30 text-xs uppercase tracking-widest font-header">
+            <div>&copy; 2026 Sofia Sharomazova</div>
+            <button onclick="openAdminModal()" class="text-theme-text hover:scale-110 transition-transform p-3">
+                <i data-lucide="key" class="w-5 h-5"></i>
+            </button>
+        </footer>
+    </main>
+
+    <!-- ADMIN BAR -->
+    <div id="admin-bar" class="fixed top-0 left-0 w-full z-50 bg-theme-text text-theme-bg px-6 py-2 text-xs font-bold uppercase hidden flex justify-between items-center transform -translate-y-full transition-transform duration-300 font-header">
+        <span>Editor Mode Active</span>
+        <button onclick="toggleEditor(false)" class="hover:underline">Exit</button>
+    </div>
+
+    <!-- LIGHTBOX -->
+    <div id="lightbox" class="fixed inset-0 z-50 bg-theme-bg/95 hidden flex items-center justify-center p-4 md:p-8 opacity-0 transition-opacity duration-300 backdrop-blur-sm">
+        <button onclick="closeLightbox()" class="absolute top-4 right-4 md:top-8 md:right-8 text-theme-text hover:opacity-50 z-50">
+            <i data-lucide="x" class="w-10 h-10"></i>
+        </button>
+        <div class="w-full h-full flex flex-col md:flex-row gap-8 items-center justify-center max-w-[1600px]">
+            <div class="relative w-full md:w-[70%] h-[50vh] md:h-[90vh] flex items-center justify-center md:justify-end">
+                <img id="lightbox-img" src="" alt="Artwork" class="max-h-full max-w-full object-contain shadow-2xl">
+            </div>
+            <div class="w-full md:w-[30%] text-left flex flex-col justify-center h-auto md:h-full border-t md:border-t-0 md:border-l border-theme-text/10 pt-6 md:pt-0 md:pl-12">
+                <h3 id="lightbox-title" class="font-display text-4xl md:text-6xl font-bold text-theme-text mb-4 leading-none">Title</h3>
+                <div class="space-y-6 font-header">
+                    <div>
+                        <p class="text-[10px] uppercase tracking-widest text-theme-text/50 mb-1">Year</p>
+                        <p id="lightbox-year" class="font-display text-xl text-theme-text">2024</p>
+                    </div>
+                    <div>
+                        <p class="text-[10px] uppercase tracking-widest text-theme-text/50 mb-1">Technique</p>
+                        <p id="lightbox-medium" class="font-display text-xl text-theme-text">Oil</p>
+                    </div>
+                    <div>
+                        <p class="text-[10px] uppercase tracking-widest text-theme-text/50 mb-1">Subject</p>
+                        <p id="lightbox-subject" class="font-display text-xl text-theme-text">Name</p>
+                    </div>
+                    <div>
+                        <p class="text-[10px] uppercase tracking-widest text-theme-text/50 mb-1">Location</p>
+                        <p id="lightbox-place" class="font-display text-xl text-theme-text">Oxford</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADMIN MODAL -->
+    <div id="admin-modal" class="fixed inset-0 z-[60] bg-black/90 hidden items-center justify-center backdrop-blur-sm">
+        <div class="bg-theme-bg border border-theme-text/20 p-8 w-full max-w-md relative">
+            <button onclick="document.getElementById('admin-modal').style.display='none'" class="absolute top-4 right-4 text-theme-text/50 hover:text-theme-text">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <h3 class="font-display text-2xl text-theme-text mb-6">Artist Access</h3>
+            <input type="password" id="admin-pass" placeholder="Enter Password" class="w-full bg-transparent border border-theme-text/20 p-3 text-theme-text mb-4 focus:border-theme-text outline-none">
+            <button onclick="checkAdmin()" class="w-full bg-theme-text text-theme-bg font-bold uppercase tracking-widest py-3 hover:opacity-90 transition-colors font-header">Enter</button>
+            <p id="login-error" class="text-red-500 text-xs mt-2 hidden">Incorrect password.</p>
+        </div>
+    </div>
+
+    <script>
+        // --- THEME DATA ---
+        const themeRed = {
+            portrait: "https://res.cloudinary.com/dp3g7dyx9/image/upload/v1771098209/Sonia_red_minimalism_SVG_rxzjob.svg"
+        };
+        const themeGreen = {
+            portrait: "https://res.cloudinary.com/dp3g7dyx9/image/upload/v1771099530/Sonia_green_SVG_ahc3od.svg"
+        };
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const img = document.getElementById('hero-portrait');
+            
+            // Fade out
+            img.style.transition = 'opacity 0.2s';
+            img.style.opacity = '0';
+
+            setTimeout(() => {
+                if (html.getAttribute('data-theme') === 'green') {
+                    html.removeAttribute('data-theme');
+                    img.src = themeRed.portrait;
+                } else {
+                    html.setAttribute('data-theme', 'green');
+                    img.src = themeGreen.portrait;
+                }
+                // Fade in
+                setTimeout(() => {
+                    img.style.opacity = '1';
+                }, 50);
+            }, 200);
+        }
+
+        // --- DATA ---
+        let artworks = [
+            {
+                id: 1,
+                title: "Aliona",
+                year: "2026",
+                medium: "Oil",
+                subject: "Aliona",
+                place: "Oxford",
+                url: "https://res.cloudinary.com/dp3g7dyx9/image/upload/v1771096403/Aliona_2026_craylq.jpg"
+            },
+            {
+                id: 2,
+                title: "Nadia",
+                year: "2024",
+                medium: "Watercolour Crayons",
+                subject: "Nadia",
+                place: "Oxford",
+                url: "https://res.cloudinary.com/dp3g7dyx9/image/upload/v1771096103/Nadia_21_July_24_q8kxyt.jpg"
+            }
+        ];
+
+        let activeFilter = { type: 'all', value: 'all' };
+        let isEditorMode = false;
+
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').style.opacity = '0';
+                setTimeout(() => { document.getElementById('loader').style.display = 'none'; }, 800);
+            }, 500);
+            lucide.createIcons();
+            renderFilters();
+            renderGallery();
+        });
+
+        function renderFilters() {
+            const container = document.getElementById('filter-container');
+            const years = [...new Set(artworks.map(a => a.year))].sort().reverse();
+            const people = [...new Set(artworks.map(a => a.subject))].sort();
+            const techniques = [...new Set(artworks.map(a => a.medium))].sort();
+            const places = [...new Set(artworks.map(a => a.location))].sort(); 
+
+            const createSelect = (label, options, key) => {
+                const select = document.createElement('select');
+                select.className = "bg-transparent border-b border-theme-text/20 text-theme-text py-1 cursor-pointer outline-none hover:border-theme-text transition-colors uppercase appearance-none pr-4";
+                select.innerHTML = `<option value="all" class="text-black">${label}</option>` + 
+                    options.map(opt => `<option value="${opt}" class="text-black">${opt}</option>`).join('');
+                select.addEventListener('change', (e) => {
+                    document.querySelectorAll('select').forEach(s => { if(s !== select) s.value = 'all'; });
+                    activeFilter = { type: key, value: e.target.value };
+                    renderGallery();
+                });
+                return select;
+            };
+
+            container.innerHTML = '';
+            container.appendChild(createSelect("Year", years, 'year'));
+            container.appendChild(createSelect("Person", people, 'subject'));
+            container.appendChild(createSelect("Technique", techniques, 'medium'));
+            const placesFromData = [...new Set(artworks.map(a => a.place))].sort();
+            container.appendChild(createSelect("Place", placesFromData, 'place'));
+            
+            const reset = document.createElement('button');
+            reset.innerText = "RESET";
+            reset.className = "hover:underline text-theme-text";
+            reset.onclick = () => {
+                document.querySelectorAll('select').forEach(s => s.value = 'all');
+                activeFilter = { type: 'all', value: 'all' };
+                renderGallery();
+            };
+            container.appendChild(reset);
+        }
+
+        function renderGallery() {
+            const grid = document.getElementById('gallery-grid');
+            grid.innerHTML = '';
+            const filtered = artworks.filter(art => {
+                if (activeFilter.value === 'all') return true;
+                return art[activeFilter.type] === activeFilter.value;
+            });
+            filtered.forEach((art) => {
+                const div = document.createElement('div');
+                div.className = "group relative cursor-pointer overflow-hidden aspect-[3/4]";
+                div.innerHTML = `
+                    <div class="relative w-full h-full bg-theme-text/5">
+                        <img src="${art.url}" alt="${art.title}" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105 group-hover:grayscale-0 grayscale opacity-90 group-hover:opacity-100">
+                        <div class="absolute inset-0 bg-theme-text/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center text-center p-4">
+                            <h3 class="font-display text-3xl font-bold text-theme-bg translate-y-4 group-hover:translate-y-0 transition-transform duration-500">${art.title}</h3>
+                            <p class="font-header text-sm uppercase tracking-widest text-theme-bg mt-2 translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75">View Work</p>
+                        </div>
+                    </div>
+                `;
+                div.onclick = () => openLightbox(art);
+                grid.appendChild(div);
+            });
+        }
+
+        function openAdminModal() {
+            if(isEditorMode) { toggleEditor(false); } 
+            else {
+                document.getElementById('admin-modal').style.display = 'flex';
+                document.getElementById('admin-pass').value = '';
+                document.getElementById('login-error').classList.add('hidden');
+            }
+        }
+
+        function checkAdmin() {
+            if (document.getElementById('admin-pass').value === 'admin') {
+                document.getElementById('admin-modal').style.display = 'none';
+                toggleEditor(true);
+            } else { document.getElementById('login-error').classList.remove('hidden'); }
+        }
+
+        function toggleEditor(active) {
+            isEditorMode = active;
+            const bio = document.getElementById('bio-content');
+            const bars = [document.getElementById('admin-bar'), document.getElementById('admin-controls')];
+            if (active) {
+                bars.forEach(b => { b.classList.remove('hidden'); b.classList.remove('-translate-y-full'); });
+                bio.contentEditable = "true";
+                bio.classList.add('border', 'border-dashed', 'border-theme-text', 'p-2');
+                bio.focus();
+            } else {
+                bars.forEach(b => { b.classList.add('hidden'); b.classList.add('-translate-y-full'); });
+                bio.contentEditable = "false";
+                bio.classList.remove('border', 'border-dashed', 'border-theme-text', 'p-2');
+            }
+        }
+
+        document.getElementById('add-art-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const fd = new FormData(e.target);
+            artworks.unshift({
+                id: Date.now(),
+                title: fd.get('title'),
+                year: fd.get('year'),
+                medium: fd.get('medium'),
+                subject: fd.get('subject'),
+                place: fd.get('location'),
+                url: fd.get('url')
+            });
+            renderFilters(); renderGallery();
+            e.target.reset(); alert("Artwork Added!");
+        });
+
+        function openLightbox(art) {
+            const lb = document.getElementById('lightbox');
+            document.getElementById('lightbox-img').src = art.url;
+            document.getElementById('lightbox-title').innerText = art.title;
+            document.getElementById('lightbox-year').innerText = art.year;
+            document.getElementById('lightbox-medium').innerText = art.medium;
+            document.getElementById('lightbox-subject').innerText = art.subject;
+            document.getElementById('lightbox-place').innerText = art.place;
+            lb.classList.remove('hidden');
+            requestAnimationFrame(() => lb.classList.remove('opacity-0'));
+        }
+
+        function closeLightbox() {
+            const lb = document.getElementById('lightbox');
+            lb.classList.add('opacity-0');
+            setTimeout(() => lb.classList.add('hidden'), 300);
+        }
+    </script>
+</body>
+</html>
