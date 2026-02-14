@@ -63,13 +63,16 @@
             /* Default: Stark Red */
             --bg-color: #000000;
             --text-color: #E31C25;
+            --bio-color: #FFFFFF; /* White bio text for Red theme */
         }
 
         [data-theme="green"] {
-            /* Warm Green Theme */
-            /* Adjusted text color to be darker/richer to match the portrait better */
-            --bg-color: #D95420; 
-            --text-color: #2e4d28; 
+            /* Warm Green Theme - Inverted */
+            /* Background: Deep Forest Green */
+            --bg-color: #2e4d28; 
+            /* Text: Vibrant Orange (Matching the SVG) */
+            --text-color: #ea7626; 
+            --bio-color: #ea7626; /* Keep bio orange in Green theme for monochrome look */
         }
 
         body {
@@ -77,6 +80,12 @@
             color: var(--text-color);
             overflow-x: hidden;
             transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        /* Utility class for Bio text color */
+        .text-bio {
+            color: var(--bio-color);
+            transition: color 0.5s ease;
         }
 
         ::selection {
@@ -259,7 +268,8 @@
                     </ul>
                 </div>
                 <div class="md:col-span-8">
-                    <div id="bio-content" class="text-xl md:text-3xl font-light leading-relaxed text-theme-text font-display">
+                    <!-- Updated class to text-bio for theme-specific white/orange override -->
+                    <div id="bio-content" class="text-xl md:text-3xl font-light leading-relaxed text-bio font-display">
                         Sofia Sharomazova is a Russian artist living and working in Oxford.
                     </div>
                 </div>
@@ -332,7 +342,7 @@
             portrait: "https://res.cloudinary.com/dp3g7dyx9/image/upload/v1771098209/Sonia_red_minimalism_SVG_rxzjob.svg"
         };
         const themeGreen = {
-            portrait: "https://res.cloudinary.com/dp3g7dyx9/image/upload/v1771099530/Sonia_green_SVG_ahc3od.svg"
+            portrait: "https://res.cloudinary.com/dp3g7dyx9/image/upload/v1771102031/Sonia_orange_SVG_better_eeeqjk.svg"
         };
 
         function toggleTheme() {
