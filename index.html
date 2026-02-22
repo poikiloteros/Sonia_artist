@@ -371,7 +371,7 @@
         // 1. FIREBASE CONFIGURATION
         // ---------------------------------------------------------
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, doc, updateDoc, deleteDoc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         
         // --- PASTE YOUR FIREBASE CONFIG HERE ---
         const firebaseConfig = {
@@ -453,12 +453,6 @@
                 onSnapshot(q, (snapshot) => {
                     artworks = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                     refreshUI();
-                // --- NEW: Load Bio from Cloud ---
-                const bioRef = doc(db, "content", "bio");
-                getDoc(bioRef).then(docSnap => {
-                    if (docSnap.exists()) {
-                        document.getElementById('bio-content').innerText = docSnap.data().text;
-                    }
                 });
             } else {
                 // Local Fallback
@@ -660,23 +654,6 @@
             }
         };
         document.getElementById('exit-editor-btn').onclick = () => window.toggleEditor(false);
-
-        // --- NEW: Auto-save Bio on Blur ---
-        document.getElementById('bio-content').addEventListener('blur', async (e) => {
-            if (!isEditorMode || !isCloudActive) return; // Only save if logged in
-            
-            const newText = e.target.innerText;
-            try {
-                // setDoc will create the "content" collection and "bio" document if they don't exist
-                await setDoc(doc(db, "content", "bio"), { text: newText });
-                
-                // Visual feedback: Flash the border green for 1 second
-                e.target.classList.replace('border-theme-text', 'border-green-500');
-                setTimeout(() => e.target.classList.replace('border-green-500', 'border-theme-text'), 1000);
-            } catch (err) {
-                console.error("Error saving bio:", err);
-            }
-        });
 
         // --- CRUD OPERATIONS ---
         
